@@ -1,6 +1,7 @@
 package event;
 
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -11,7 +12,7 @@ public class Event {
 	private String msg;
 	private Date date;
 	private DateFormat df;
-	
+
 	
 	public Event(Date date,DateFormat df) {
 		this.date=date;
@@ -39,6 +40,15 @@ public class Event {
 		this.date = date;
 	}
 
+	public static boolean isDay(){
+       boolean daymark=false;
+		Calendar cal = Calendar.getInstance();
+
+		if(cal.get(Calendar.AM_PM)==0){
+			daymark=true;
+		}
+		return daymark;
+	}
 
 
 	@Override
@@ -46,6 +56,6 @@ public class Event {
 		return "Event [id=" + id + ", msg=" + msg + ", date=" + date + ", date formatted=" + df.format(date) + "]";
 	}
 	
-	
+
 	
 }

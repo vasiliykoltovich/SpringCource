@@ -19,6 +19,7 @@ public class CacheFileEventLogger extends FileEventLogger {
 
 	public CacheFileEventLogger(String filename) {
 		super(filename);
+
 		// TODO Auto-generated constructor stub
 	}
 	

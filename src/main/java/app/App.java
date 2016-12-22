@@ -32,7 +32,7 @@ public class App {
 
 
 
-    private void logEvent(EventType type, String message) {
+    public void logEvent(EventType type, String message) {
 
         event.setMsg(message.replaceAll(client.getId(), client.getFullName())+" "+client.getGreeting());
         eventlogger = loggers.get(type);

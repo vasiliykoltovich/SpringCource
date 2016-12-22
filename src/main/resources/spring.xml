@@ -15,9 +15,13 @@
 	<import resource="loggers.xml" />
 
 	<bean id="client" class="client.Client">
+		<!--<constructor-arg value="${id}"/>-->
+
+		<!--<constructor-arg value="${name}"/>-->
+		<!--<constructor-arg value="${greeting}"/>-->
 		<constructor-arg value="${id}"/>
 
-		<constructor-arg value="${name}"/>
+		<constructor-arg value="${project}"/>
 		<constructor-arg value="${greeting}"/>
 
 
@@ -27,10 +31,12 @@
 		<property name="locations">
 			<list>
 				<value>classpath:client.properties</value>
+				<value>classpath:config.properties</value>
 			</list>
 		</property>
 		<property name="ignoreResourceNotFound" value="true"/>
 		<property name="systemPropertiesMode" value="1"/>
+
 
 	</bean>
 
@@ -54,8 +60,11 @@
 
 <util:map id="loggersMap">
 	<entry key="INFO" value-ref="cacheEventLogger" />
+    <!--<entry key="INFO" value-ref="#{T(Event).isDay()?cacheEventLogger : fileEventLogger}" />-->
 	<entry key="ERROR" value-ref="combinedEventLogger" />
 </util:map>
+
+
 
 	<bean id="app" class="app.App">
 

@@ -1,14 +1,12 @@
 package client;
 
-
 import event.Event;
-import interfaces.IConsoleLogger;
+import interfaces.IEventLogger;
 
-public class ConsoleEventLogger implements IConsoleLogger {
+public class ConsoleEventLogger implements IEventLogger {
 
-	public void logEvent(Event event){
-		System.out.println(event.toString());
-	}
+    public void logEvent(Event event) {
+        System.out.println(event.toString());
+    }
 
-	
 }

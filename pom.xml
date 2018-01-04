@@ -20,9 +20,9 @@
             </plugin>
         </plugins>
     </build>
-    <modules>
+    <!--<modules>
         <module>jackson</module>
-    </modules>
+    </modules>-->
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>

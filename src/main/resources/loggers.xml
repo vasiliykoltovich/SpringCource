@@ -3,7 +3,8 @@
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
-        
+
+
 	<bean id="cacheEventLogger" class="client.CacheFileEventLogger"
 		destroy-method="destroy" parent="fileEventLogger">
 		<constructor-arg value="12" />
@@ -14,6 +15,7 @@
 	<bean id="fileEventLogger" class="client.FileEventLogger"
 		init-method="init">
 		<constructor-arg value="filelog.txt" />
+        <constructor-arg value="${logfile}"/>
 	</bean>
 	
 	<bean id="combinedEventLogger" class="client.CombinedEventLogger"

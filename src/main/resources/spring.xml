@@ -1,77 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:c="http://www.springframework.org/schema/c" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
  		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
  		http://www.springframework.org/schema/util
  		http://www.springframework.org/schema/util/spring-util-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
+    <context:component-scan base-package="client,event,app,interfaces"/>
+    <import resource="loggers.xml"/>
 
-	<context:component-scan base-package="client"/>
-	<import resource="loggers.xml" />
+    <bean id="client" class="client.Client">
+        <!--<constructor-arg value="${id}"/>-->
 
-	<bean id="client" class="client.Client">
-		<!--<constructor-arg value="${id}"/>-->
+        <!--<constructor-arg value="${name}"/>-->
+        <!--<constructor-arg value="${greeting}"/>-->
+        <constructor-arg value="${id}"/>
 
-		<!--<constructor-arg value="${name}"/>-->
-		<!--<constructor-arg value="${greeting}"/>-->
-		<constructor-arg value="${id}"/>
+        <constructor-arg value="${project}"/>
+        <constructor-arg value="${greeting}"/>
+    </bean>
 
-		<constructor-arg value="${project}"/>
-		<constructor-arg value="${greeting}"/>
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:client.properties</value>
+                <value>classpath:config.properties</value>
+                <value>classpath:logging.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="systemPropertiesMode" value="1"/>
 
-
-	</bean>
-
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:client.properties</value>
-				<value>classpath:config.properties</value>
-			</list>
-		</property>
-		<property name="ignoreResourceNotFound" value="true"/>
-		<property name="systemPropertiesMode" value="1"/>
-
-
-	</bean>
+    </bean>
 
 
-	<!-- <bean id="eventLogger" class="com.epam.spring.core.client.ConsoleEventLogger" 
-		/> <bean id="fileEventLogger" class="com.epam.spring.core.client.FileEventLogger" 
-		init-method="init"> <constructor-arg value="filelog.txt" /> </bean> <bean 
-		id="cacheEventLogger" class="com.epam.spring.core.client.CacheFileEventLogger" 
-		destroy-method="destroy" parent="fileEventLogger"> <constructor-arg value="5" 
-		/> </bean> -->
+    <bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance"/>
+
+    <bean id="event" class="event.Event" scope="prototype">
+        <constructor-arg>
+            <bean class="java.util.Date"/>
+        </constructor-arg>
+        <constructor-arg ref="dateFormat"/>
+    </bean>
+
+    <util:map id="loggersMap">
+        <!--<entry key="INFO" value-ref="cacheEventLogger"/>-->
+        <entry key="INFO" value="#{T(event.Event).isDay() ? cacheEventLogger : fileEventLogger}"/>
+        <entry key="ERROR" value-ref="combinedEventLogger"/>
+    </util:map>
 
 
-	<bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance" />
-
-	<bean id="event" class="event.Event" scope="prototype" >
-		<constructor-arg>
-			<bean class="java.util.Date" />
-		</constructor-arg>
-		<constructor-arg ref="dateFormat" />
-	</bean>
-
-<util:map id="loggersMap">
-	<entry key="INFO" value-ref="cacheEventLogger" />
-    <!--<entry key="INFO" value-ref="#{T(Event).isDay()?cacheEventLogger : fileEventLogger}" />-->
-	<entry key="ERROR" value-ref="combinedEventLogger" />
-</util:map>
-
-
-
-	<bean id="app" class="app.App">
-
-		<constructor-arg ref="client" />
-		
-		<constructor-arg ref="event" />
-		<constructor-arg ref="loggersMap"/>
-	</bean>
+    <bean id="app" class="app.App">
+        <constructor-arg ref="client"/>
+        <constructor-arg ref="event"/>
+        <constructor-arg ref="loggersMap"/>
+    </bean>
 
 </beans>

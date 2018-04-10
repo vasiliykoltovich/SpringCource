@@ -4,15 +4,14 @@ import client.Client;
 import event.Event;
 import event.EventType;
 import interfaces.IEventLogger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class App {
 
-    @Autowired
     private Client client;
     private IEventLogger eventlogger;
     private Event event;
@@ -31,12 +30,12 @@ public class App {
 
         App app = (App) ctx.getBean("app");
 
-        app.logEvent(EventType.ERROR, "Some message for 1");
-        app.logEvent(EventType.INFO, "Some message for 2");
-        app.logEvent(EventType.ERROR, "Some message for 3");
-        app.logEvent(EventType.INFO, "Some message for 4");
-
-        app.logEvent(EventType.ERROR, "Some message for 5");
+        app.logEvent(EventType.ERROR, "Initial error message for 1");
+        app.logEvent(EventType.INFO, "Initial info message for 2");
+        app.logEvent(EventType.ERROR, "Initial error message for 3");
+        app.logEvent(EventType.INFO, "Initial info  message for 4");
+        app.logEvent(EventType.ERROR, "Initial error message for 5");
+        app.logEvent(EventType.INFO, "Initial info message for 6");
 
         ctx.close();
 
@@ -45,6 +44,9 @@ public class App {
     public void logEvent(EventType type, String message) {
 
         event.setMsg(message.replaceAll(client.getId(), client.getFullName()) + " " + client.getGreeting());
+        System.out.println("Размер множества: "+ client.getValueSet().size());
+        System.out.println("Elements: ");
+//        new ArrayList(client.getValueSet()).stream().forEach(System.out::println);
         eventlogger = loggers.get(type);
         eventlogger.logEvent(event);
     }

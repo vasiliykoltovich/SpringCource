@@ -44,7 +44,8 @@ public class FileEventLogger implements IEventLogger {
 
         for (Event event : cache) {
             try {
-                FileUtils.writeStringToFile(file, event.toString() + "\n", true);
+//                FileUtils.writeStringToFile(file, event.toString() + "\n", true);
+                Files.write(Paths.get(logfile), (event.toString() + System.lineSeparator()).getBytes(),StandardOpenOption.CREATE, StandardOpenOption.APPEND);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -56,7 +57,7 @@ public class FileEventLogger implements IEventLogger {
     public void logEvent(Event event) {
         try {
             Files.write(Paths.get(logfile), (event.toString() + System.lineSeparator()).getBytes(),StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-            FileUtils.writeStringToFile(file, event.toString() + "\n", true);
+//            FileUtils.writeStringToFile(file, event.toString() + "\n", true);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
